@@ -23,6 +23,7 @@ public class CardBasicOp {
         Consumo consumoSiguiente = consumoService.getConsumo();
         while(consumo!=null) {
             Tarjeta tarjeta = consumo.getTarjeta();
+            Tarjeta tarjetaSiguiente = consumoSiguiente!=null ? consumoSiguiente.getTarjeta() : null;
             // Consigna #2: Informar si una operación es válida
             if(consumo.getMonto()>=montoValidoMax) {
                 System.err.printf("Rechazado: Consumo mayor a %.2f\\$. %s %d %s %5$tm/%5$ty. Monto: %.2f\\$; PDV: %d; %8$td/%8$tm/%8$y %8$tT%n", montoValidoMax, tarjeta.getMarca(), tarjeta.getNumero(), tarjeta.getCardholder(), tarjeta.getVencimiento(), consumo.getMonto(), consumo.getPdv(), consumo.getFechaHora());
@@ -33,35 +34,28 @@ public class CardBasicOp {
                 System.err.printf("Rechazado: Tarjeta no válida: %s %d %s %5$tm/%5$ty", tarjeta.getMarca(), tarjeta.getNumero(), tarjeta.getCardholder(), tarjeta.getVencimiento());
             }
             // Consigna #4: Identificar si una tarjeta es distinta a otra
-            if(consumoSiguiente!=null && !consumo.getTarjeta().equals(consumoSiguiente.getTarjeta()))
-                System.out.printf("Tarjetas distintas %s %d %s %5$tm/%5$ty %s %d %s %5$tm/%5$ty%n");
+            if(tarjetaSiguiente!=null && !tarjeta.equals(tarjetaSiguiente))
+                System.out.printf("Tarjetas distintas %s %d %s %4$tm/%4$ty %s %d %s %8$tm/%8$ty%n", tarjeta.getMarca(), tarjeta.getNumero(), tarjeta.getCardholder(), tarjeta.getVencimiento(), tarjetaSiguiente.getMarca(), tarjetaSiguiente.getNumero(), tarjetaSiguiente.getCardholder(), tarjetaSiguiente.getVencimiento());
             // Consigna #5: Obtener por medio de un método la tasa de una operación
+            System.out.printf("Tasa calculada: %.2f. %s %s%n", calcularTasa(tarjeta.getMarca(), consumo.getMonto(), consumo.getFechaHora()), tarjeta.getMarca(), tarjeta.getCardholder());
             consumo = consumoSiguiente;
             consumoSiguiente = consumoService.getConsumo();
         }
     }
     
-    private int getOp() {
-        int op;
-        System.out.println("Seleccione la operación a realizar");
-        System.out.println("1. Información de tarjeta.");
-        System.out.println("2. Consultar validez de operación.");
-        System.out.println("3. Consultar validez tarjeta.");
-        System.out.println("4. Identificar si 2 tarjetas son distintas.");
-        System.out.println("5. Tasa de operación.");
-        System.out.println("6. Salir.");
-        do {
-            System.out.print("Ingrese opción (1-5): ");
-            op = scanner.nextInt();
-            if(op<1 || 5<op)
-                System.out.println("La opción debe estar entre 1 y 5.");
-        } while(op<1 || 5<op);
-        return op;
-    }
-    
-    void validaParaOperar() {
-        System.out.println("Para informar si una tarjeta es válida para operar se valida que");
-        System.out.println("la fecha de vencimiento sea posterior a la fecha actual.");
-        System.out.print("Ingrese la fecha de vencimiento (MM/AA): ");
+    public float calcularTasa(Marca marca, float monto, LocalDateTime fechaOp) {
+        float valorInicial;
+        switch(marca) {
+            case VISA :
+                valorInicial = (float) (fechaOp.getYear()%1000) / fechaOp.getMonthValue();
+                break;
+            case NARA:
+                valorInicial = fechaOp.getDayOfMonth() * 0.5F;
+                break;
+            default:
+                valorInicial = fechaOp.getMonthValue() * 0.1F;
+        }
+        
+        return Math.min(Math.max(valorInicial, 0.3F), 10);
     }
 }

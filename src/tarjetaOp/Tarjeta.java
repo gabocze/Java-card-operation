@@ -30,11 +30,11 @@ public class Tarjeta {
     public LocalDateTime getVencimiento() {
         return vencimiento;
     }
-
-
+    
     @Override
     public boolean equals(Object tarjeta) {
         Tarjeta tar = (Tarjeta) tarjeta;
-        return marca==tar.marca && cardholder.equals(tar.cardholder) && vencimiento.equals(tar.vencimiento) && numero==tar.numero;
+        return tar!=null && marca==tar.marca && cardholder.equals(tar.cardholder)
+                && vencimiento.equals(tar.vencimiento) && numero==tar.numero;
     }
 }
