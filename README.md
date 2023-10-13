@@ -8,6 +8,15 @@ Ejecutable que procesa operaciones con tarjetas de crédito.
 ## Ejecución
 1. Si no está visible, ir a Ver | Abrir vista
     1. Escribir Java Project ENTER
-1. Ir a la ventana Java Project
-2. Desplegar el proyecto tarjetarest
-3. Ir al margen derecho del ítem desplegado, hacer clic en el botón Run/Debug
+1. Ir a la ventana Java Project\
+    ```
+    JAVA PROJECTS
+      Java-card-operation
+    ```
+2. Desplegar el proyecto `Java-card-operation`\
+    ```
+    JAVA PROJECTS
+      Java-card-operation
+        tarjetaop
+    ```
+3. A la derecha de `tarjetaop`, hacer clic en el botón `[▶🪲]`
