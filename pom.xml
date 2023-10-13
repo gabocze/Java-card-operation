@@ -10,4 +10,11 @@
   </properties>
   <dependencies>
   </dependencies>
+  <distributionManagement>
+   <repository>
+     <id>github</id>
+     <name>gabocze Apache Maven Packages</name>
+     <url>https://maven.pkg.github.com/gabocze/Java-card-operation/</url>
+   </repository>
+</distributionManagement>
 </project>
