@@ -1,12 +1,11 @@
 package tarjetaOp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Scanner;
 
 // Consigna #0: Clase ejecutable
 public class CardBasicOp {
     static final int montoValidoMax = 1000;
-    private Scanner scanner = new Scanner(System.in);
     private final ConsumoService consumoService;
 
     public CardBasicOp(ConsumoService consumoService) {
@@ -37,13 +36,13 @@ public class CardBasicOp {
             if(tarjetaSiguiente!=null && !tarjeta.equals(tarjetaSiguiente))
                 System.out.printf("Tarjetas distintas %s %d %s %4$tm/%4$ty %s %d %s %8$tm/%8$ty%n", tarjeta.getMarca(), tarjeta.getNumero(), tarjeta.getCardholder(), tarjeta.getVencimiento(), tarjetaSiguiente.getMarca(), tarjetaSiguiente.getNumero(), tarjetaSiguiente.getCardholder(), tarjetaSiguiente.getVencimiento());
             // Consigna #5: Obtener por medio de un método la tasa de una operación
-            System.out.printf("Tasa calculada: %.2f. %s %s%n", calcularTasa(tarjeta.getMarca(), consumo.getMonto(), consumo.getFechaHora()), tarjeta.getMarca(), tarjeta.getCardholder());
+            System.out.printf("Tasa calculada: %.2f. %s %s%n", calcularTasa(tarjeta.getMarca(), consumo.getMonto(), consumo.getFechaHora().toLocalDate()), tarjeta.getMarca(), tarjeta.getCardholder());
             consumo = consumoSiguiente;
             consumoSiguiente = consumoService.getConsumo();
         }
     }
     
-    public float calcularTasa(Marca marca, float monto, LocalDateTime fechaOp) {
+    public float calcularTasa(Marca marca, float monto, LocalDate fechaOp) {
         float valorInicial;
         switch(marca) {
             case VISA :
@@ -56,6 +55,6 @@ public class CardBasicOp {
                 valorInicial = fechaOp.getMonthValue() * 0.1F;
         }
         
-        return Math.min(Math.max(valorInicial, 0.3F), 10);
+        return Math.min(Math.max(valorInicial, 0.3F), 5);
     }
 }
