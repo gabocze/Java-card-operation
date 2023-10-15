@@ -34,3 +34,6 @@ Ejecutable que procesa operaciones con tarjetas de crédito.
         tarjetaop
     ```
 3. Hacer clic en el botón `[▶🪲]`, que está situado a la derecha de `tarjetaop`
+
+## Modo de uso
+`Java-card-operation` tiene como clase principal a `CardBasicOp` la cual procesa un lote de consumos con tarjetas. Al ejecutar la clase, el resultado del proceso aparecerá por consola.
